@@ -1,21 +1,18 @@
-type Error = variant { NotFound : record { msg : text } };
-type Message = record {
+type Car = record {
   id : nat64;
-  title : text;
+  model : text;
   updated_at : opt nat64;
-  body : text;
+  price_per_hour : nat64;
+  name : text;
   created_at : nat64;
-  attachment_url : text;
+  is_available : bool;
 };
-type MessagePayload = record {
-  title : text;
-  body : text;
-  attachment_url : text;
-};
-type Result = variant { Ok : Message; Err : Error };
+type CarPayload = record { model : text; price_per_hour : nat64; name : text };
+type Result = variant { Ok : Car; Err : text };
 service : {
-  add_message : (MessagePayload) -> (opt Message);
-  delete_message : (nat64) -> (Result);
-  get_message : (nat64) -> (Result) query;
-  update_message : (nat64, MessagePayload) -> (Result);
+  add_car : (CarPayload) -> (Car);
+  get_car : (nat64) -> (Result) query;
+  list_cars : () -> (vec Car) query;
+  rent_car : (nat64) -> (Result);
+  return_car : (nat64) -> (Result);
 }
